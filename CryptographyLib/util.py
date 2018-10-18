@@ -1,6 +1,7 @@
 from math import floor
 import random
 from CryptographyLib import exception
+from CryptographyLib import Polynomial as pl
 
 
 def binaryGCD(x, y):
@@ -47,7 +48,7 @@ def batchGCD(x):
             ans.append(__d)
             if len(__d) == 1:
                 break
-            global __d
+            # global __d
             __d = [__d[2 * i] * __d[2 * i + 1] for i in range(len(__d) // 2)]
         ans.append(__d)
         return ans
@@ -178,3 +179,15 @@ def increaseTo2Pow(x):
         return x
     else:
         return k
+
+
+def isPolynomialIrreducibleOnGF2n(p):
+    """
+    the calculate on polynomial's coefficient is under mod 2
+    """
+    if not isinstance(p, pl.Polynomial):
+        raise TypeError
+    for i in range(2, p.expression):
+        if not p.gcd(pl.Polynomial(i)).equal(pl.Polynomial(1)):
+            return False
+    return True
