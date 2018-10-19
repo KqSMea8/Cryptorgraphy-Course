@@ -25,6 +25,9 @@ class Polynomial:
     def __str__(self):
         return str(self.expression)
 
+    def __lt__(self, other):
+        return self.expression < other.expression
+
     def add(self, x, modFunc=None):
         if not isinstance(x, Polynomial):
             raise TypeError
