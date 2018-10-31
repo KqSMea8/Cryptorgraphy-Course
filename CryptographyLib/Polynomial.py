@@ -55,6 +55,20 @@ class Polynomial:
         else:
             return Polynomial(v)
 
+    def fastMulWithMod(self, x, modFunc):
+        if not isinstance(x, Polynomial):
+            raise TypeError
+        if not isinstance(modFunc, Polynomial) and modFunc is not None:
+            raise TypeError
+        x.__validityTest__()
+        self.__validityTest__()
+        v, w, ans = self.expression, x.expression, 0
+        while w:
+            if w & 1:
+                ans = Polynomial.__modAndDiv__(ans ^ v, modFunc.expression)[0]
+            w, v = w // 2, Polynomial.__modAndDiv__(v * 2, modFunc.expression)[0]
+        return Polynomial(ans)
+
     def div(self, x):
         if not isinstance(x, Polynomial):
             raise TypeError
@@ -161,6 +175,15 @@ class Polynomial:
 
 
 if __name__ == "__main__":
+    while True:
+        p1 = Polynomial(random.randint(1, 0xffff))
+        p2 = Polynomial(random.randint(1, 0xffff))
+        p3 = Polynomial(random.randint(1, 0xffff))
+        p4 = p1.fastMulWithMod(p2, p3)
+        p5 = p1.mul(p2, p3)
+        print(p1, p2, p3, p4, p5)
+        assert p4.equal(p5)
+    exit(0)
     p = Polynomial(0x2)
     print(hex((p.mulInverse(Polynomial(0x11b))).expression))
     exit(0)

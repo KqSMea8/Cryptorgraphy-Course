@@ -1,7 +1,10 @@
-from math import floor
+import logging
+import math
 import random
-from CryptographyLib import exception
+from math import floor
+
 from CryptographyLib import Polynomial as pl
+from CryptographyLib import exception
 
 
 def binaryGCD(x, y):
@@ -140,11 +143,11 @@ def isPrimer(n: int):
         r, s = r + 1, s // 2
     for _ in range(10):
         a = random.randrange(2, n)
-        x = pow(a, s, n)
+        x = fastModulePow(a, s, n)
         if x == 1 or x == n - 1:
             continue
         for _ in range(r - 1):
-            x = pow(x, 2, n)
+            x = fastModulePow(x, 2, n)
             if x == n - 1:
                 break
         else:
@@ -173,6 +176,15 @@ def bitLen(x):
     return ans
 
 
+def numberLen(x: int, base: int) -> int:
+    x = abs(x)
+    ans = 0
+    while x:
+        x //= base
+        ans += 1
+    return ans
+
+
 def increaseTo2Pow(x):
     k = 1 << bitLen(x)
     if k >> 1 == x:
@@ -191,3 +203,46 @@ def isPolynomialIrreducibleOnGF2n(p):
         if not p.gcd(pl.Polynomial(i)).equal(pl.Polynomial(1)):
             return False
     return True
+
+
+def mulInverse(a, n):
+    """
+    calculate b where ab=1(mod n)
+    :return (doesExist, answer)
+    """
+    s, t, d = extendBinaryGCD(a, n)
+    return d == 1, s % n
+
+
+if __name__ == "__main__":
+    # test isPrimer
+    def trivialIsPrimer(n):
+        if n & 1 == 0:
+            return False
+        for i in range(3, int(math.sqrt(n)) + 2, 2):
+            if n % i == 0:
+                return False
+        return True
+
+
+    def trivialDecompose(n, toFind=-1):
+        ans = []
+        for j in range(2, int(math.sqrt(n)) + 1):
+            if n % j == 0:
+                ans.append(j)
+            if len(ans) == toFind:
+                return ans
+        return ans
+
+
+    # while True:
+    #     a = random.randint(10, 10000000)
+    #     b = random.randint(20, 33333333333) + a
+    #     x, y = mulInverse(a, b)
+    #     print(x, y)
+    #     if x:
+    #         assert a * y % b == 1
+    assert numberLen(100, 10) == 3
+    assert numberLen(12345678, 10) == 8
+    assert numberLen(0, 10) == 0
+    assert numberLen(1, 10) == 1
