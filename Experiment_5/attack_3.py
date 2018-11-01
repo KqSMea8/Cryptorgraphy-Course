@@ -153,7 +153,8 @@ def MSBAttack_3(c, e, n, check):
         # __
 
         print("len(M): ", len(M))
-        print("tmpDiff: ", util.numberLen(lastIntervalLen, 10), util.numberLen(__tmpL, 10))
+        print("tmpDiff: ", util.numberLen(
+            lastIntervalLen, 10), util.numberLen(__tmpL, 10))
         print(__tmpL)
         print("step: ", stepForStep2Iter)
         print("it: ", it)
@@ -176,21 +177,26 @@ def MSBAttack_3(c, e, n, check):
         for i in M:
             allNarrow = allNarrow and i[1] - i[0] < 1000
         if allNarrow:
-            file = open("./1.txt", "w")
+            resFile = open("./1.txt", "w")
             cnt = 0
             for j in M:
-                print([k * s0r % n for k in range(j[0], j[1] + 1)], file=file)
+                print([k * s0r % n for k in range(j[0], j[1] + 1)], file=resFile)
                 cnt += j[1] - j[0] + 1
             print("cnt: ", cnt)
-            file.close()
-            return M
+            resFile.close()
+            return [[z*s0r % n for z in range(k[0], k[1]+1)] for k in M]
 
 
 if __name__ == "__main__":
-    p = 35
+    p = 9086392988939546881642644416028815353560712803262924991123003293380576913539458318742322252357100876922002826340850685077586992022670823089714921783344391433736513473050947875637071265092890728312505146465783410786077486194754154890172381266273349351556374613078187758176044497241425480037950406531842887
     c = decAndEnc_2.enc(p)
     e, n = param_2.e, param_2.n
+    assert c == 3361544169850847375839766338159774550418715118762659043831748746520007328793399836962640931008398205409865883137128937335377097931302109345319778124351260660721174397345649870406920629118944038730481189127811896846236622567950865918375524078084248080393016415328661875447855968054940749914481699889040462
 
     s0Output = open("./2.txt", "w")
-    print(MSBAttack_3(c, e, n, p))
+    res = MSBAttack_3(c, e, n, p)
     s0Output.close()
+    for o in res:
+        for l in o:
+            if util.fastModulePow(l, e, n) == c:
+                print("res is: ", l)
