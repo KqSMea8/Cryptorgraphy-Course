@@ -3,7 +3,7 @@ from Experiment_5.__scaffold import decAndEnc_2
 from Experiment_5.__scaffold import oracle_2, param_2
 
 
-def MSBAttack_3(c, e, n, check):
+def MSBAttack_3(c, e, n, check=None):
     """
     this MSBAttack_3 only for n where the bit just next to msb is 0
     (i.e. if msb is ath bit, then the (a-1)th bit should be 0
@@ -57,9 +57,9 @@ def MSBAttack_3(c, e, n, check):
         c0 = c * util.fastModulePow(__tForStepOne, e, n) % n
         if util.binaryGCD(__tForStepOne, n) == 1 and oracle_2.MSBOracle(c0):
             s0, s = __tForStepOne, __tForStepOne
-            assert M[0][0] <= decAndEnc_2.dec(c0) <= M[0][1]
-            print(decAndEnc_2.dec(c0), check * s0 % n)
-            assert decAndEnc_2.dec(c0) == check * s0 % n
+            # assert M[0][0] <= decAndEnc_2.dec(c0) <= M[0][1]
+            # print(decAndEnc_2.dec(c0), check * s0 % n)
+            # assert decAndEnc_2.dec(c0) == check * s0 % n
             break
         __stepForStepOne *= 2
         __tForStepOne += __stepForStepOne
@@ -69,9 +69,9 @@ def MSBAttack_3(c, e, n, check):
 
     __t, s0r = util.mulInverse(s0, n)
     assert __t
-    for i in M:
-        print(i[0], i[1], check * s0 % n)
-        assert i[0] <= check * s0 % n <= i[1]
+    # for i in M:
+    #     print(i[0], i[1], check * s0 % n)
+    #     assert i[0] <= check * s0 % n <= i[1]
 
     while True:
         if it == 1:
@@ -94,20 +94,20 @@ def MSBAttack_3(c, e, n, check):
                     break
             print("case 3: ", s)
         if oldS == s:
-            print("no new s, len(M): ", len(M))
-            print(M)
-            print([i[1] - i[0] for i in M])
-            print()
-            k = [(i[0] * s0r % n, i[1] * s0r % n) for i in M]
-            for i in M:
-                if i[0] <= check * s0 % n <= i[1]:
-                    print(i, i[1] - i[0], param_2.n, (i[1] - i[0]) / param_2.n)
-                    print("in one interval")
-                    if i[1] - i[0] < 1000:
-                        print("Success")
-            for i in k:
-                if i[0] == check or i[1] == check:
-                    print("Success", i)
+            # print("no new s, len(M): ", len(M))
+            # print(M)
+            # print([i[1] - i[0] for i in M])
+            # print()
+            # k = [(i[0] * s0r % n, i[1] * s0r % n) for i in M]
+            # for i in M:
+            #     if i[0] <= check * s0 % n <= i[1]:
+            #         print(i, i[1] - i[0], param_2.n, (i[1] - i[0]) / param_2.n)
+            #         print("in one interval")
+            #         if i[1] - i[0] < 1000:
+            #             print("Success")
+            # for i in k:
+            #     if i[0] == check or i[1] == check:
+            #         print("Success", i)
             return False
 
         print(s, file=s0Output)
@@ -168,10 +168,10 @@ def MSBAttack_3(c, e, n, check):
 
         it = it + 1
 
-        included = False
-        for i in M:
-            included = included or (i[0] <= check * s0 % n <= i[1])
-        assert included
+        # included = False
+        # for i in M:
+        #     included = included or (i[0] <= check * s0 % n <= i[1])
+        # assert included
 
         allNarrow = True
         for i in M:
@@ -194,9 +194,10 @@ if __name__ == "__main__":
     assert c == 3361544169850847375839766338159774550418715118762659043831748746520007328793399836962640931008398205409865883137128937335377097931302109345319778124351260660721174397345649870406920629118944038730481189127811896846236622567950865918375524078084248080393016415328661875447855968054940749914481699889040462
 
     s0Output = open("./2.txt", "w")
-    res = MSBAttack_3(c, e, n, p)
+    res = MSBAttack_3(c, e, n)
     s0Output.close()
     for o in res:
         for l in o:
             if util.fastModulePow(l, e, n) == c:
+                assert l == p
                 print("res is: ", l)
