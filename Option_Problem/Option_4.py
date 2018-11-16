@@ -1,11 +1,9 @@
 import gmpy
-from imp import reload
 
 from CryptographyLib import util
-from Option_Problem.__scaffold import param
 
 
-def wienersAttack(e, n, debugInfo=None):
+def wienersAttack(e, n):
     def continuedFractionExpansion(x, y):
         a, r = x // y, x % y
         yield a

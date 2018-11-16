@@ -1,9 +1,8 @@
-import logging
 import math
 import random
 from math import floor
 
-from CryptographyLib import Polynomial as pl
+from CryptographyLib import PolynomialOverZ2 as pl
 from CryptographyLib import exception
 
 
@@ -197,10 +196,10 @@ def isPolynomialIrreducibleOnGF2n(p):
     """
     the calculate on polynomial's coefficient is under mod 2
     """
-    if not isinstance(p, pl.Polynomial):
+    if not isinstance(p, pl.PolynomialOverZ2):
         raise TypeError
-    for i in range(2, p.expression):
-        if not p.gcd(pl.Polynomial(i)).equal(pl.Polynomial(1)):
+    for i in range(2, int(p)):
+        if not p.gcd(pl.PolynomialOverZ2(i)).equal(pl.PolynomialOverZ2(1)):
             return False
     return True
 
@@ -210,7 +209,7 @@ def mulInverse(a, n):
     calculate b where ab=1(mod n)
     :return (doesExist, answer)
     """
-    s, t, d = extendBinaryGCD(a, n)
+    s, t, d = extendBinaryGCD(a % n, n)
     return d == 1, s % n
 
 
@@ -246,3 +245,7 @@ if __name__ == "__main__":
     assert numberLen(12345678, 10) == 8
     assert numberLen(0, 10) == 0
     assert numberLen(1, 10) == 1
+    assert isPolynomialIrreducibleOnGF2n(pl.PolynomialOverZ2(0x13))
+    assert not isPolynomialIrreducibleOnGF2n(pl.PolynomialOverZ2(0x14))
+    assert isPolynomialIrreducibleOnGF2n(pl.PolynomialOverZ2(0x11b))
+    assert False
