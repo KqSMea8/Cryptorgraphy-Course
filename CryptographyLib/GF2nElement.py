@@ -53,7 +53,7 @@ class GF2nElement:
 
     def __validityTest(self, x):
         if not isinstance(x, GF2nElement):
-            raise TypeError
+            raise TypeError(type(x))
         if not self.__modulus.equal(x.__modulus):
             raise ElementNotInSameGF2nField
 
@@ -68,7 +68,7 @@ def GF2nElementFactory(modulus: int):
     return lambda expression: GF2nElement(expression, modulus)
 
 
-if __name__ == "__main__":
+def test():
     # while True:
     #     a1 = GF2nElement(random.randint(1, 0x11b - 1), 0x11b)
     #     a2 = GF2nElement(random.randint(1, 0x11b - 1), 0x11b)
@@ -87,8 +87,12 @@ if __name__ == "__main__":
     f1 = GF2nElementFactory(0x11b)
     f2 = GF2nElementFactory(0x1b)
     try:
-        f1(0x1) == f2(0x1)
+        var = f1(0x1) == f2(0x1)
         assert False
     except Exception as e:
         print(e.__class__, "OK")
         assert True
+
+
+if __name__ == "__main__":
+    test()

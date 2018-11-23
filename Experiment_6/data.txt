@@ -1,0 +1,10 @@
+len: 246 (a, b): (9, 15) isCyclic: (False, None) time: 4.914624
+len: 238 (a, b): (7, 16) isCyclic: (False, None) time: 5.010631999999999
+len: 254 (a, b): (15, 9) isCyclic: (False, None) time: 5.1322610000000015
+len: 253 (a, b): (4, 6) isCyclic: (False, None) time: 5.119554000000001
+len: 276 (a, b): (9, 14) isCyclic: (False, None) time: 5.2436679999999996
+len: 253 (a, b): (10, 11) isCyclic: (False, None) time: 5.451577
+len: 285 (a, b): (10, 1) isCyclic: (False, None) time: 5.763060999999997
+len: 238 (a, b): (12, 16) isCyclic: (False, None) time: 5.708143
+len: 276 (a, b): (7, 12) isCyclic: (False, None) time: 5.750106000000002
+len: 268 (a, b): (11, 7) isCyclic: (False, None) time: 5.769440999999993

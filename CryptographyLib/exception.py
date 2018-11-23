@@ -49,3 +49,7 @@ class EllipticCurveElementNotInGroup(Exception):
 
 class EllipticCurveElementNotSupportSuchGroup(Exception):
     pass
+
+
+class EllipticCurveParamIllegal(Exception):
+    pass

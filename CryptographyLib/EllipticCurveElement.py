@@ -1,5 +1,6 @@
 from CryptographyLib.GF2nElement import *
 from CryptographyLib.pythonUtil import ClassProperty
+from CryptographyLib.exception import *
 
 
 class EllipticCurveElementOverZp:
@@ -17,6 +18,10 @@ class EllipticCurveElementOverZp:
         self.__x = x
         self.__y = y
         self.__isIdentity = isIdentity
+        # TODO
+        # should verify the validity of paramA and paramB
+        # if (self.__paramA ** 3 * 4 + self.__paramB ** 2 * 27) % modulus == 0:
+        #     raise EllipticCurveParamIllegal
 
     def __str__(self):
         if self.__isIdentity:
@@ -103,6 +108,11 @@ class EllipticCurveElementOverGF2n:
         self.__x = x
         self.__y = y
         self.__isIdentity = isIdentity
+        # TODO
+        # should verify the validity of paramA and paramB
+        # if self.__paramA * self.__paramA * self.__paramA * 4 + \
+        #         self.__paramB * self.__paramB * 27 == 0:
+        #     raise EllipticCurveParamIllegal
 
     def innerExpression(self):
         return int(self.__x), int(self.__y)
@@ -213,7 +223,7 @@ class EllipticCurveElementFactory:
             raise EllipticCurveElementNotSupportSuchGroup
 
 
-if __name__ == "__main__":
+def test():
     # print((EllipticCurveElementOverZp.IDENTITY, EllipticCurveElementOverZp.IDENTITY))
     # f1 = EllipticCurveElementFactory.getFactory(EllipticCurveElementFactory.OverZp, 9, 17, 23)
     # g = f1(16, 5)
@@ -264,3 +274,7 @@ if __name__ == "__main__":
     # except Exception as e:
     #     print(e.__class__, "OK")
     #     assert True
+
+
+if __name__ == "__main__":
+    test()

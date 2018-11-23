@@ -218,7 +218,7 @@ class PolynomialOverZ2:
         return self.__expression == x.__expression
 
 
-if __name__ == "__main__":
+def test():
     # while True:
     #     p1 = PolynomialOverZ2(random.randint(1, 0xffff))
     #     p2 = PolynomialOverZ2(random.randint(1, 0xffff))
@@ -259,3 +259,7 @@ if __name__ == "__main__":
         print(p12, p1, p2)
         if int(p12) != -1:
             assert p12.mul(p1, p2).equal(PolynomialOverZ2(1))
+
+
+if __name__ == "__main__":
+    test()

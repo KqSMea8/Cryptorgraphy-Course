@@ -1,6 +1,7 @@
+import random
 import time
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 from CryptographyLib.EllipticCurveElement import EllipticCurveElementOverGF2n
 from CryptographyLib.GF2nElement import GF2nElement
@@ -19,9 +20,9 @@ def elementOfECOverGF2n(paramA: int, paramB: int, modulus: int, n: int):
         for j in range(n):
             if EllipticCurveElementOverGF2n. \
                     isPointInGroup(GF2nElement(paramA, modulus),
-                                   GF2nElement(paramB, modulus),
-                                   GF2nElement(i, modulus),
-                                   GF2nElement(j, modulus)):
+                            GF2nElement(paramB, modulus),
+                            GF2nElement(i, modulus),
+                            GF2nElement(j, modulus)):
                 elements.append((i, j))
     return elements
 
@@ -45,18 +46,38 @@ def isTheGroupCyclic(elements):
     return False, None
 
 
-def draw(elements):
-    x, y = [i[0] for i in elements], [i[1] for i in elements]
-    plt.figure(1)
-    plt.scatter(x, y, c='r', marker='o')
-    plt.show()
+# def draw(elements):
+#     x, y = [i[0] for i in elements], [i[1] for i in elements]
+#     plt.figure(1)
+#     plt.scatter(x, y, c='r', marker='o')
+#     plt.show()
+
+
+def main():
+    def check(x: int, y: int, m: int) -> bool:
+        k1, k2 = GF2nElement(x, m), GF2nElement(y, m)
+        k3, k4 = GF2nElement(4, m), GF2nElement(27, m)
+        return k3 * k1 * k1 * k1 + k4 * k2 * k2 != GF2nElement(0, m)
+
+    # t1 = time.clock()
+    while True:
+        t1 = time.clock()
+        a = random.randint(1, 0x10)
+        b = random.randint(1, 0x10)
+        modulus = 0x11b
+        if not check(a, b, modulus):
+            continue
+        elements = elementOfECOverGF2n(a, b, modulus, 0xff)
+        isC = isTheGroupCyclic(elements)
+        print(
+            "len:", len(elements), "(a, b):", (a, b), "isCyclic:", isC, "time:",
+            time.clock() - t1
+        )
+    # print(elements)
+    # print(isTheGroupCyclic(elements))
+    # print(time.clock() - t1)
+    # draw(elements)
 
 
 if __name__ == "__main__":
-    t1 = time.clock()
-    elements = elementOfECOverGF2n(0x11, 0x12, 0x11b, 0xff)
-    print(len(elements))
-    print(elements)
-    print(isTheGroupCyclic(elements))
-    print(time.clock() - t1)
-    draw(elements)
+    main()
